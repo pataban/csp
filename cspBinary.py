@@ -94,7 +94,7 @@ class CspBinary(Csp):
                 elif(line[j]=='0'):
                     self.domain[i][j]=[0]
         
-        self.domain=np.array(self.domain)
+        self.domain=np.array(self.domain,dtype=list)
 
 
 

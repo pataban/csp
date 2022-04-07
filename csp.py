@@ -23,7 +23,7 @@ class Csp():
             self.domain.append([])
             for j in range(0,self.n):
                 self.domain[i].append(domain)
-        self.domain=np.array(self.domain)
+        self.domain=np.array(self.domain,dtype=list)
   
     def mapSolution(self,solution):
         start(2)
@@ -97,7 +97,9 @@ class Csp():
 
     def backTrack(self)-> bool: #false on finished all
         start(4)
-        while(self.solution[self.currX][self.currY]+1>=self.domain.shape[2]):
+        #print(self.domain.shape)
+        #self.prtDomain()
+        while(self.solution[self.currX][self.currY]+1>=len(self.domain[self.currX][self.currY])):
             if(self.currY>0):
                 self.currY-=1
             elif(self.currX>0):

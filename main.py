@@ -3,9 +3,9 @@ from cspBinary import CspBinary
 from cspFutoshiki import CspFutoshiki
 
 if __name__ == "__main__":
-    csp=CspBinary(6,r"dane\binary_6x6")
+    #csp=CspBinary(6,r"dane\binary_6x6")
     #csp=CspBinary(6,r"dane\binaryDemo")
-    #csp=CspBinary(4)
+    csp=CspBinary(4)
     #csp.prtDomain()
     #csp.prtSolution()
 

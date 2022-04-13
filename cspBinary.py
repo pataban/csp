@@ -95,7 +95,7 @@ class CspBinary(Csp):
                     self.domain[i][j]=[0]
         
         self.domain=np.array(self.domain,dtype=list)
-
+        self.mapSolution()
 
 
 

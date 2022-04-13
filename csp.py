@@ -142,15 +142,16 @@ class Csp():
         while self.nextVariable():
             while not self.isSolution():
                 if self.chkConstraints():
+                    #input()
                     self.nextVariable()
                 else:
+                    #input()
                     self.backTrack()
             if self.chkConstraints():
                 self.saveSolution()
                 stop("all")
                 return True
-            else:
-                self.backTrack()
+            #input()
         
         """while(self.nextSolution()):
             if(self.chkSolution()):

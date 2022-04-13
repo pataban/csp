@@ -2,17 +2,30 @@ import numpy as np
 from pandas import DataFrame
 import time
 
-times=np.full((10,2),0.0)
+from sqlalchemy import values
 
-def start(n):
-    times[n,1]=time.time()
+times={}
 
-def stop(n):
-    times[n,0]+=time.time()-times[n,1]
+def start(key):
+    if not key in times:
+        times[key]=[0.0,0.0]
+    times[key][1]=time.time()
+
+def stop(key):
+    times[key][0]=time.time()-times[key][1]
 
 def prtTimes():
+    global times
+
+    times=list(map(lambda k,v:(k,v[0]),times.keys(),times.values()))
+    getT=lambda t:t[1]
+    times.sort(key=getT,reverse=True)
+
+    convertTime=lambda t:f"{t[0]} =".ljust(15)+f" {int(round(t[1]*1000))/1000}\n"
+    times=map(convertTime,times)
+    times=list(times)
     print("times:")
-    print(list(map(lambda i,t:f"{i}={round(t*1000)/1000}",range(0,9),times[:,0])))
+    print("".join(times))
 
 
 def prt2D(data,size):

@@ -30,7 +30,7 @@ class Csp():
         self.mapSolution()
   
     def mapSolution(self,solution=None):
-        start(2)
+        start("map")
         if (solution is None):
             solution=self.solution
         if(self.mappedSolution is None):
@@ -44,48 +44,48 @@ class Csp():
                 self.mappedSolution[i,j]=d[s]
                 
         #data=np.array(list(map(lambda sol,dom:list(map(lambda s,d:None if(s==None) else d[s],sol,dom)),solution,self.domain)))
-        stop(2)
+        stop("map")
 
 
     def chkConstraints(self)->bool:
         #self.prtMappedSolution()
         #print(f"x={self.currX} y={self.currY}")
-        start(3)
+        start("chkCon")
         
-        start(6)
+        start("chkConRow")
         for conR in self.constraintRow[self.currX]:
             if not conR(self.mappedSolution[self.currX],self.currY):
-                stop(6)
-                stop(3)
+                stop("chkConRow")
+                stop("chkCon")
                 #print("aaa")
                 return False
         """for conR,mSol in zip(self.constraintRow,self.mappedSolution):
             if(not conR(mSol)):
-                stop(6)
-                stop(3)
+                stop("chkConRow")
+                stop("chkCon")
                 return False"""
 
         for conC in self.constraintCol[self.currY]:
             if not conC(self.mappedSolution[:,self.currY],self.currX):
-                stop(6)
-                stop(3)
+                stop("chkConRow")
+                stop("chkCon")
                 #print("bbb")
                 return False
         """for i, conC in enumerate(self.constraintCol):
             if(not conC(self.mappedSolution[:,i])):
-                stop(6)
-                stop(3)
+                stop("chkConRow")
+                stop("chkCon")
                 return False"""
-        stop(6)
-        start(5)
+        stop("chkConRow")
+        start("conG")
         for conG in self.constraintGlobal:
             if(not conG(self.mappedSolution,self.currX,self.currY)):
-                stop(5)
-                stop(3)
+                stop("conG")
+                stop("chkCon")
                 #print("ccc")
                 return False
-        stop(5)
-        stop(3)
+        stop("conG")
+        stop("chkCon")
         #print("true")
         #input()
         return True
@@ -99,18 +99,18 @@ class Csp():
         return False
 
     def saveSolution(self):
-        start(7)
+        start("save")
         self.solutionCount+=1
         self.solutions.append(copy.deepcopy(self.solution))
         self.mappedSolutions.append(copy.deepcopy(self.mappedSolution))
         #self.prtSolution()
-        stop(7)
+        stop("save")
 
   
-    def nextSolution(self)->bool:
-        start(1)
+    def nextVariable(self)->bool:
+        start("nextV")
         if((self.currX+1==self.n) and (self.currY+1==self.n)):  #full
-            stop(1)
+            stop("nextV")
             return self.backTrack()
         self.currY+=1
         if(self.currY>=self.n):
@@ -118,11 +118,11 @@ class Csp():
             self.currX+=1
         self.solution[self.currX,self.currY]=0
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
-        stop(1)
+        stop("nextV")
         return True        
 
     def backTrack(self)-> bool:
-        start(4)
+        start("backT")
         while(self.solution[self.currX][self.currY]+1>=len(self.domain[self.currX][self.currY])):
             if(self.currY>0):
                 self.currY-=1
@@ -130,24 +130,24 @@ class Csp():
                 self.currY=self.n-1
                 self.currX-=1
             else:
-                stop(4)
+                stop("backT")
                 return False
         self.solution[self.currX,self.currY]+=1
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][self.solution[self.currX,self.currY]]
-        stop(4)
+        stop("backT")
         return True
 
     def getFirst(self)->bool:
-        start(0)
-        while self.nextSolution():
+        start("all")
+        while self.nextVariable():
             while not self.isSolution():
                 if self.chkConstraints():
-                    self.nextSolution()
+                    self.nextVariable()
                 else:
                     self.backTrack()
             if self.chkConstraints():
                 self.saveSolution()
-                stop(0)
+                stop("all")
                 return True
             else:
                 self.backTrack()
@@ -155,10 +155,10 @@ class Csp():
         """while(self.nextSolution()):
             if(self.chkSolution()):
                 self.saveSolution()
-                stop(0)
+                stop("all")
                 return True"""
         
-        stop(0)
+        stop("all")
         return False
 
     def getAll(self)->bool:

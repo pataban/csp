@@ -3,24 +3,33 @@ from support import *
 
 
 class CspBinary(Csp):
-    def __init__(self, n,filename=None):#zamienic row col constraint na global bo takie same 
+    def __init__(self, n,filename=None):
         super().__init__(n)
-        self.constraintRow=[CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition]
-        self.constraintCol=[CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition,CspBinary.constraintTrippleValueRepetition]
+        self.constraintRow=[]
+        self.constraintCol=[]
+        for i in range(0,n):
+            self.constraintRow.append(CspBinary.constraintTrippleValueRepetition)
+            self.constraintCol.append(CspBinary.constraintTrippleValueRepetition)
         self.constraintGlobal=[CspBinary.constraintEqualNumberSplit,CspBinary.constraintUniqueRowCol]
+        
         if filename is None:
             self.setDomain([0,1])
         else:
             self.loadDomainBinary(filename)
 
-    def constraintTrippleValueRepetition(data):
+    def constraintTrippleValueRepetition(data,currId):
         start(8)
-        #if(len(data)<3):        #usunac dla przyspieszenia
-        #    return True
-        for d1,d2,d3 in zip(data,data[1:],data[2:]):
+        if(currId<2):
+            return True
+        if data[currId]==data[currId-1] and data[currId-1]==data[currId-2]:
+            stop(8)
+            return False
+
+        """for d1,d2,d3 in zip(data,data[1:],data[2:]):
             if(d1==d2 and d2==d3):
                 stop(8)
-                return False    #chk time performance
+                return False    #chk time performance"""
+
         """for i in range(0,len(data)-2):
             if(data[i]==data[i+1] and data[i+1]==data[i+2]):
                 stop(8)
@@ -28,22 +37,20 @@ class CspBinary(Csp):
         stop(8)
         return True
 
-    def constraintUniqueRowCol(data):
+    def constraintUniqueRowCol(data,currX,currY):
         start(9)
-        for i in range(0,data.shape[0]):
-            for j in range(0,data.shape[0]):
-                if((i!=j) and(np.array_equal(data[i,:],data[j,:]))):
-                    stop(9)
-                    return False
-        for i in range(0,data.shape[1]):
-            for j in range(0,data.shape[1]):
-                if((i!=j) and(np.array_equal(data[:,i],data[:,j]))):
-                    stop(9)
-                    return False
+        for j in range(0,data.shape[0]):
+            if((currX!=j) and(np.array_equal(data[currX,:currY+1],data[j,:currY+1]))):
+                stop(9)
+                return False
+        for j in range(0,data.shape[1]):
+            if((currY!=j) and (np.array_equal(data[:currX+1,currY],data[:currX+1,j]))):
+                stop(9)
+                return False
         stop(9)
         return True
 
-    def constraintEqualNumberSplit(data):           ##chk tylko dla pelnego solution
+    def constraintEqualNumberSplit(data,currX,currY):           ##chk tylko dla pelnego solution
         """for i in range(0,data.shape[0]):
             countZero=0
             countOne=0

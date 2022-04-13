@@ -51,7 +51,7 @@ class Csp():
         start(3)
         
         start(6)
-        if not self.constraintRow[self.currX](self.mappedSolution[self.currX]):
+        if not self.constraintRow[self.currX](self.mappedSolution[self.currX],self.currY):
             stop(6)
             stop(3)
             return False
@@ -61,7 +61,7 @@ class Csp():
                 stop(3)
                 return False"""
 
-        if not self.constraintCol[self.currY](self.mappedSolution[:,self.currY]):
+        if not self.constraintCol[self.currY](self.mappedSolution[:,self.currY],self.currX):
             stop(6)
             stop(3)
             return False
@@ -74,7 +74,7 @@ class Csp():
         
         start(5)
         for conG in self.constraintGlobal:
-            if(not conG(self.mappedSolution)):
+            if(not conG(self.mappedSolution,self.currX,self.currY)):
                 stop(5)
                 stop(3)
                 return False

@@ -4,7 +4,7 @@ from cspFutoshiki import CspFutoshiki
 
 if __name__ == "__main__":
     csp=None
-    data=3
+    data=1
     if data ==1:
         csp=CspBinary(4)
     elif data==2:

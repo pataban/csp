@@ -51,17 +51,25 @@ class Csp():
         start(3)
         
         start(6)
-        for conR,mSol in zip(self.constraintRow,self.mappedSolution):
+        if not self.constraintRow[self.currX](self.mappedSolution[self.currX]):
+            stop(6)
+            stop(3)
+            return False
+        """for conR,mSol in zip(self.constraintRow,self.mappedSolution):
             if(not conR(mSol)):
                 stop(6)
                 stop(3)
-                return False
+                return False"""
 
-        for i, conC in enumerate(self.constraintCol):
+        if not self.constraintCol[self.currY](self.mappedSolution[:,self.currY]):
+            stop(6)
+            stop(3)
+            return False
+        """for i, conC in enumerate(self.constraintCol):
             if(not conC(self.mappedSolution[:,i])):
                 stop(6)
                 stop(3)
-                return False
+                return False"""
         stop(6)
         
         start(5)

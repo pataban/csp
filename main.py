@@ -3,9 +3,15 @@ from cspBinary import CspBinary
 from cspFutoshiki import CspFutoshiki
 
 if __name__ == "__main__":
-    #csp=CspBinary(6,r"dane\binary_6x6")
-    #csp=CspBinary(6,r"dane\binaryDemo")
-    csp=CspBinary(4)
+    csp=None
+    data=3
+    if data ==1:
+        csp=CspBinary(4)
+    elif data==2:
+        csp=CspBinary(6,r"dane\binaryDemo")
+    elif data==3:
+        csp=CspBinary(6,r"dane\binary_6x6")
+    
     #csp.prtDomain()
     #csp.prtSolution()
 

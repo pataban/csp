@@ -53,30 +53,35 @@ class Csp():
         start(6)
         for conR,mSol in zip(self.constraintRow,self.mappedSolution):
             if(not conR(mSol)):
-                stop(3)
                 stop(6)
+                stop(3)
                 return False
 
         for i, conC in enumerate(self.constraintCol):
             if(not conC(self.mappedSolution[:,i])):
-                stop(3)
                 stop(6)
+                stop(3)
                 return False
         stop(6)
         
         start(5)
         for conG in self.constraintGlobal:
             if(not conG(self.mappedSolution)):
-                stop(3)
                 stop(5)
+                stop(3)
                 return False
         stop(5)
         
         stop(3)
         return True
 
-    def chkSolution(self):
+    def isSolution(self):
         return ((self.currX+1==self.n) and (self.currY+1==self.n))
+
+    def chkSolution(self):
+        if self.isSolution() and self.chkConstraints():
+            return True
+        return False
 
     def saveSolution(self):
         start(7)
@@ -87,25 +92,22 @@ class Csp():
         stop(7)
 
   
-    def nextSolution(self)->bool:   #false on finished all
+    def nextSolution(self)->bool:
         start(1)
         if((self.currX+1==self.n) and (self.currY+1==self.n)):  #full
             stop(1)
             return self.backTrack()
-        while not ((self.currX+1==self.n) and (self.currY+1==self.n)):
-            self.currY+=1
-            if(self.currY>=self.n):
-                self.currY=0
-                self.currX+=1
-            self.solution[self.currX,self.currY]=0
-            self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
+        self.currY+=1
+        if(self.currY>=self.n):
+            self.currY=0
+            self.currX+=1
+        self.solution[self.currX,self.currY]=0
+        self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
         stop(1)
         return True        
 
-    def backTrack(self)-> bool: #false on finished all
+    def backTrack(self)-> bool:
         start(4)
-        #print(self.domain.shape)
-        #self.prtDomain()
         while(self.solution[self.currX][self.currY]+1>=len(self.domain[self.currX][self.currY])):
             if(self.currY>0):
                 self.currY-=1
@@ -122,11 +124,23 @@ class Csp():
 
     def getFirst(self)->bool:
         start(0)
-        while(self.nextSolution()):
-            if(self.chkConstraints()):
+        while self.nextSolution():
+            while not self.isSolution:
+                if self.chkConstraints:
+                    self.nextSolution()
+                else:
+                    self.backTrack()
+            if self.chkConstraints():
                 self.saveSolution()
                 stop(0)
                 return True
+        
+        """while(self.nextSolution()):
+            if(self.chkSolution()):
+                self.saveSolution()
+                stop(0)
+                return True"""
+        
         stop(0)
         return False
 

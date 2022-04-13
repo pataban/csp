@@ -1,13 +1,12 @@
 from csp import Csp
 from support import *
 
-
 class CspBinary(Csp):
     def __init__(self, n,filename=None):
         super().__init__(n)
         self.constraintRow=[]
         self.constraintCol=[]
-        for i in range(0,n):
+        for _ in range(0,n):
             self.constraintRow.append([CspBinary.constraintTrippleValueRepetition,CspBinary.constraintEqualNumberSplit])
             self.constraintCol.append([CspBinary.constraintTrippleValueRepetition,CspBinary.constraintEqualNumberSplit])
         self.constraintGlobal=[CspBinary.constraintUniqueRowCol]
@@ -17,87 +16,41 @@ class CspBinary(Csp):
         else:
             self.loadDomainBinary(filename)
 
-    def constraintTrippleValueRepetition(data,currId):
+
+    def constraintTrippleValueRepetition(data,currId)->bool:
         start("conTripple")
         if(currId<2):
             return True
         if data[currId]==data[currId-1] and data[currId-1]==data[currId-2]:
             stop("conTripple")
             return False
-
-        """for d1,d2,d3 in zip(data,data[1:],data[2:]):
-            if(d1==d2 and d2==d3):
-                stop("conTripple")
-                return False    #chk time performance"""
-
-        """for i in range(0,len(data)-2):
-            if(data[i]==data[i+1] and data[i+1]==data[i+2]):
-                stop("conTripple")
-                return False"""
-        stop("conTripple")
         return True
 
-    def constraintUniqueRowCol(data,currX,currY):
+    def constraintEqualNumberSplit(data,currId)->bool:    
+        start("conEqSplit")
+        if currId+1!=data.shape[0]:
+            stop("conEqSplit")
+            return True
+        if((np.sum(data)<<1)!=currId+1):   #bit shift
+            stop("conEqSplit")
+            return False
+        stop("conEqSplit")
+        return True
+
+    def constraintUniqueRowCol(data,currX,currY)->bool:
         start("conUnique")
         if(currX+1==data.shape[0]):
-            for j in range(0,currY):
-                if(np.array_equal(data[:,currY],data[:,j])):
+            for i in range(0,currY):
+                if(np.array_equal(data[:,currY],data[:,i])):
                     stop("conUnique")
                     return False
         if(currY+1==data.shape[1]):
-            for j in range(0,currX):
-                if(np.array_equal(data[currX,:],data[j,:])):
+            for i in range(0,currX):
+                if(np.array_equal(data[currX,:],data[i,:])):
                     stop("conUnique")
                     return False
         stop("conUnique")
         return True
-
-    def constraintEqualNumberSplit(data,currId):           ##chk tylko dla pelnego solution
-        """for i in range(0,data.shape[0]):
-            countZero=0
-            countOne=0
-            for j in range(0,data.shape[1]):#sum tablicy zamiast sprawdzania
-                if data[i][j] ==0:
-                    countZero+=1
-                elif data[i][j] ==1:
-                    countOne+=1
-            if countZero!=countOne:
-                return False
-        for i in range(0,data.shape[1]):
-            countZero=0
-            countOne=0
-            for j in range(0,data.shape[0]):
-                if data[j][i] ==0:
-                    countZero+=1
-                elif data[j][i] ==1:
-                    countOne+=1
-            if countZero!=countOne:
-                return False
-        return True"""##porownac czas wykonania
-        """ax0=np.sum(data,axis=0)
-        for sum in ax0:
-            if(sum<<1!=data.shape[0]):   #bit shift
-                return False
-
-        ax1=np.sum(data,axis=1)
-        for sum in ax1:
-            if(sum<<1!=data.shape[0]):
-                return False"""
-        start("conEqSplit")
-        if currId+1!=data.shape[0]:
-            #print(f"{currId} -> true")
-            stop("conEqSplit")
-            return True
-        sum=np.sum(data)
-        #print(f"{data} -> {currId} -> {sum}")
-        if(sum<<1!=currId+1):   #bit shift
-            #print("false")
-            stop("conEqSplit")
-            return False
-        #print("true")
-        stop("conEqSplit")
-        return True
-
 
 
     def loadDomainBinary(self,filename):
@@ -105,7 +58,7 @@ class CspBinary(Csp):
         self.domain=[]
         for i in range(0,self.n):
             self.domain.append([])
-            for j in range(0,self.n):
+            for _ in range(0,self.n):
                 self.domain[i].append([0,1])
 
         file=open(filename)
@@ -120,24 +73,5 @@ class CspBinary(Csp):
         self.domain=np.array(self.domain,dtype=list)
         self.mapSolution()
         stop("load")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

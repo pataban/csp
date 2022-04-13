@@ -2,8 +2,6 @@ import numpy as np
 from pandas import DataFrame
 import time
 
-from sqlalchemy import values
-
 times={}
 
 def start(key):
@@ -18,25 +16,16 @@ def prtTimes():
     global times
 
     times=list(map(lambda k,v:(k,v[0]),times.keys(),times.values()))
-    getT=lambda t:t[1]
-    times.sort(key=getT,reverse=True)
+    times.sort(key=lambda t:t[1],reverse=True)
 
     convertTime=lambda t:f"{t[0]} =".ljust(15)+f" {int(round(t[1]*1000))/1000}\n"
-    times=map(convertTime,times)
-    times=list(times)
+    times=list(map(convertTime,times))
     print("times:")
     print("".join(times))
 
 
-def prt2D(data,size):
-    columns=[]
-    for i in range(0,size):
-        columns.append(' ')
-    index=[]
-    for i in range(0,size):
-        index.append(' ')
-    #tupleDomain=map(lambda dom: (lambda d:tuple(d),dom),domain)
-    print(DataFrame(data,columns=columns,index=index))
+def prt2D(data):
+    print(DataFrame(data).to_string(header=False,index=False))
 
 def prt3D(data):
     print(data)

@@ -48,39 +48,46 @@ class Csp():
 
 
     def chkConstraints(self)->bool:
+        #self.prtMappedSolution()
+        #print(f"x={self.currX} y={self.currY}")
         start(3)
         
         start(6)
-        if not self.constraintRow[self.currX](self.mappedSolution[self.currX],self.currY):
-            stop(6)
-            stop(3)
-            return False
+        for conR in self.constraintRow[self.currX]:
+            if not conR(self.mappedSolution[self.currX],self.currY):
+                stop(6)
+                stop(3)
+                #print("aaa")
+                return False
         """for conR,mSol in zip(self.constraintRow,self.mappedSolution):
             if(not conR(mSol)):
                 stop(6)
                 stop(3)
                 return False"""
 
-        if not self.constraintCol[self.currY](self.mappedSolution[:,self.currY],self.currX):
-            stop(6)
-            stop(3)
-            return False
+        for conC in self.constraintCol[self.currY]:
+            if not conC(self.mappedSolution[:,self.currY],self.currX):
+                stop(6)
+                stop(3)
+                #print("bbb")
+                return False
         """for i, conC in enumerate(self.constraintCol):
             if(not conC(self.mappedSolution[:,i])):
                 stop(6)
                 stop(3)
                 return False"""
         stop(6)
-        
         start(5)
         for conG in self.constraintGlobal:
             if(not conG(self.mappedSolution,self.currX,self.currY)):
                 stop(5)
                 stop(3)
+                #print("ccc")
                 return False
         stop(5)
-        
         stop(3)
+        #print("true")
+        #input()
         return True
 
     def isSolution(self):
@@ -133,8 +140,8 @@ class Csp():
     def getFirst(self)->bool:
         start(0)
         while self.nextSolution():
-            while not self.isSolution:
-                if self.chkConstraints:
+            while not self.isSolution():
+                if self.chkConstraints():
                     self.nextSolution()
                 else:
                     self.backTrack()
@@ -142,6 +149,8 @@ class Csp():
                 self.saveSolution()
                 stop(0)
                 return True
+            else:
+                self.backTrack()
         
         """while(self.nextSolution()):
             if(self.chkSolution()):

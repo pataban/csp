@@ -8,9 +8,9 @@ class CspBinary(Csp):
         self.constraintRow=[]
         self.constraintCol=[]
         for i in range(0,n):
-            self.constraintRow.append(CspBinary.constraintTrippleValueRepetition)
-            self.constraintCol.append(CspBinary.constraintTrippleValueRepetition)
-        self.constraintGlobal=[CspBinary.constraintEqualNumberSplit,CspBinary.constraintUniqueRowCol]
+            self.constraintRow.append([CspBinary.constraintTrippleValueRepetition,CspBinary.constraintEqualNumberSplit])
+            self.constraintCol.append([CspBinary.constraintTrippleValueRepetition,CspBinary.constraintEqualNumberSplit])
+        self.constraintGlobal=[CspBinary.constraintUniqueRowCol]
         
         if filename is None:
             self.setDomain([0,1])
@@ -39,18 +39,20 @@ class CspBinary(Csp):
 
     def constraintUniqueRowCol(data,currX,currY):
         start(9)
-        for j in range(0,data.shape[0]):
-            if((currX!=j) and(np.array_equal(data[currX,:currY+1],data[j,:currY+1]))):
-                stop(9)
-                return False
-        for j in range(0,data.shape[1]):
-            if((currY!=j) and (np.array_equal(data[:currX+1,currY],data[:currX+1,j]))):
-                stop(9)
-                return False
+        if(currX+1==data.shape[0]):
+            for j in range(0,currY):
+                if(np.array_equal(data[:,currY],data[:,j])):
+                    stop(9)
+                    return False
+        if(currY+1==data.shape[1]):
+            for j in range(0,currX):
+                if(np.array_equal(data[currX,:],data[j,:])):
+                    stop(9)
+                    return False
         stop(9)
         return True
 
-    def constraintEqualNumberSplit(data,currX,currY):           ##chk tylko dla pelnego solution
+    def constraintEqualNumberSplit(data,currId):           ##chk tylko dla pelnego solution
         """for i in range(0,data.shape[0]):
             countZero=0
             countOne=0
@@ -72,7 +74,7 @@ class CspBinary(Csp):
             if countZero!=countOne:
                 return False
         return True"""##porownac czas wykonania
-        ax0=np.sum(data,axis=0)
+        """ax0=np.sum(data,axis=0)
         for sum in ax0:
             if(sum<<1!=data.shape[0]):   #bit shift
                 return False
@@ -80,7 +82,16 @@ class CspBinary(Csp):
         ax1=np.sum(data,axis=1)
         for sum in ax1:
             if(sum<<1!=data.shape[0]):
-                return False
+                return False"""
+        if currId+1!=data.shape[0]:
+            #print(f"{currId} -> true")
+            return True
+        sum=np.sum(data)
+        #print(f"{data} -> {currId} -> {sum}")
+        if(sum<<1!=currId+1):   #bit shift
+            #print("false")
+            return False
+        #print("true")
         return True
 
 

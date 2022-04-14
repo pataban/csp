@@ -45,17 +45,20 @@ class Csp():
 
     def chkConstraints(self)->bool:
         start("chkCon")
-        
+        #self.prtMappedSolution()
+        #print(f"{self.currX} {self.currY}")
         start("chkConRow")
         for conR in self.constraintRow[self.currX]:
             if not conR(self.mappedSolution[self.currX],self.currY):
                 stop("chkConRow")
                 stop("chkCon")
+                #print("row false")
                 return False
         for conC in self.constraintCol[self.currY]:
             if not conC(self.mappedSolution[:,self.currY],self.currX):
                 stop("chkConRow")
                 stop("chkCon")
+                #print("col false")
                 return False
         stop("chkConRow")
 
@@ -64,10 +67,12 @@ class Csp():
             if(not conG(self.mappedSolution,self.currX,self.currY)):
                 stop("conG")
                 stop("chkCon")
+                #print("glo false")
                 return False
         stop("conG")
 
         stop("chkCon")
+        #print("true")
         return True
 
     def chkSolution(self)->bool:
@@ -118,6 +123,7 @@ class Csp():
         while self.nextVariable():
             while not self.isFullSolution():
                 if self.chkConstraints():
+                    #input()
                     self.nextVariable()
                 else:
                     self.backTrack()
@@ -125,6 +131,7 @@ class Csp():
                 self.saveSolution()
                 stop("all")
                 return True
+            #input()
         stop("all")
         return False
 

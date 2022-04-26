@@ -5,7 +5,7 @@ from cspFutoshiki import CspFutoshiki
 if __name__ == "__main__":
     csp1=None
     csp2=None
-    data=9
+    data=10
     if data ==1:
         csp1=CspBinary(4,False)
         csp2=CspBinary(4,True)
@@ -33,7 +33,12 @@ if __name__ == "__main__":
     elif data==9:
         csp1=CspFutoshiki(6,False,r"dane\futoshiki_6x6")
         csp2=CspFutoshiki(6,True,r"dane\futoshiki_6x6")
-
+    elif data==10:
+        csp1=CspFutoshiki(7,False,r"dane\futoshiki_7x7")
+        csp2=CspFutoshiki(7,True,r"dane\futoshiki_7x7")
+    elif data==11:
+        csp1=CspFutoshiki(7,False,r"dane\futoshiki_7x7_hard")
+        csp2=CspFutoshiki(7,True,r"dane\futoshiki_7x7_hard")
 
     print("backTracking:")
     print(f"result = {csp1.getFirst()}")

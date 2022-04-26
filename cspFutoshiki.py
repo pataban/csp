@@ -53,11 +53,17 @@ class CspFutoshiki(Csp):
 
     def loadDomainFutoshiki(self,filename):
         start("load")
+        defDom=[]
+        for i in range(1,self.n+1):
+            defDom.append(list(range(i,self.n+1))+list(range(1,i)))
+        defDomId=0
         self.domain=[]
         for i in range(0,self.n):
             self.domain.append([])
             for _ in range(0,self.n):
-                self.domain[i].append(list(range(1,self.n+1)))
+                self.domain[i].append(defDom[defDomId])
+                defDomId=(defDomId+1)%2
+            defDomId=(defDomId+1)%2
 
         file=open(filename)
         for i in range(0,self.n):

@@ -58,11 +58,15 @@ class CspBinary(Csp):
 
     def loadDomainBinary(self,filename):
         start("load")
+        defDom=[[0,1],[1,0]]
+        defDomId=0
         self.domain=[]
         for i in range(0,self.n):
             self.domain.append([])
             for _ in range(0,self.n):
-                self.domain[i].append([0,1])
+                self.domain[i].append(defDom[defDomId])
+                defDomId=(defDomId+1)%2
+            defDomId=(defDomId+1)%2
 
         file=open(filename)
         for i in range(0,self.n):

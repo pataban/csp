@@ -17,6 +17,8 @@ class CspFutoshiki(Csp):
         else:
             self.loadDomainFutoshiki(filename)
 
+        self.setVariableQueue()
+
     
     def constraintUnique(data,currId)->bool:
         count=np.full_like(data,0)
@@ -83,7 +85,21 @@ class CspFutoshiki(Csp):
         self.mapSolution()
         stop("load")
 
+    def setVariableQueue(self):
+        for i in range(0,self.n):
+            for j in range(0,self.n):
+                if(len(self.domain[i,j])==1):
+                    self.currV+=1
+                    self.variableQueue[self.currV]=(i,j)
+                    
         
+        varQId=self.currV+1
+        for i in range(0,self.n):
+            for j in range(0,self.n):
+                if(len(self.domain[i,j])!=1):
+                    self.variableQueue[varQId]=(i,j)
+                    varQId+=1
+
 
 
 

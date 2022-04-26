@@ -79,6 +79,7 @@ class Csp():
             if not conV(self.mappedSolution[self.currX,self.currY]):
                 stop("chkCon")
                 stop("chkConVar")
+                #print("row false")
                 return False        
         stop("chkConVar")
 

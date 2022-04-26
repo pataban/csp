@@ -1,3 +1,4 @@
+from typing import OrderedDict
 from csp import Csp
 from support import *
 
@@ -15,6 +16,8 @@ class CspBinary(Csp):
             self.setDomain([0,1])
         else:
             self.loadDomainBinary(filename)
+
+        self.setVariableQueue()
 
 
     def constraintTrippleValueRepetition(data,currId)->bool:
@@ -74,4 +77,38 @@ class CspBinary(Csp):
         self.mapSolution()
         stop("load")
 
+    def setVariableQueue(self):
+        #mozliwa mapa gestosci liczona na podstawie liczby wymuszonych sasiadow
+        # wtedy queue w kolejnosci od najwiekszej gestosci 
+        for i in range(0,self.n):
+            for j in range(0,self.n):
+                if(len(self.domain[i,j])==1):
+                    self.currV+=1
+                    self.variableQueue[self.currV]=(i,j)
+                    
+        
+        varQId=self.currV+1
+        for i in range(0,self.n):
+            for j in range(0,self.n):
+                if(len(self.domain[i,j])!=1):
+                    self.variableQueue[varQId]=(i,j)
+                    varQId+=1
 
+        # wymaga aby solution posiadalo null tam gdzie jeszcze nie ma nic przypisane
+        """domSum=np.sum(self.domain,axis=1)
+        rowDomLen=list(map(lambda ds:(ds[0],len(ds[1])),enumerate(domSum)))
+        rowDomLen.sort(key=lambda r:r[1])
+
+        for r in rowDomLen:
+            for j in range(0,self.n):
+                if(len(self.domain[r[0],j])!=1):
+                    self.variableQueue[varQId]=(r[0],j)
+                    varQId+=1"""
+
+        """order=np.empty_like(self.solution)
+        orderId=0
+        for v in self.variableQueue:
+            order[v[0],v[1]]=orderId
+            orderId+=1
+        prt2D(order)
+        print("aaa")"""

@@ -5,7 +5,7 @@ from cspFutoshiki import CspFutoshiki
 if __name__ == "__main__":
     csp1=None
     csp2=None
-    data=8
+    data=5
     if data ==1:
         csp1=CspBinary(4,False)
         csp2=CspBinary(4,True)

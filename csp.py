@@ -4,8 +4,9 @@ import numpy as np
 from support import *
 
 class Csp():
-    def __init__(self, n):
+    def __init__(self, n,forwawrdChceck=True):
         self.n=n
+        self.forwawrdChceck=forwawrdChceck
         self.domain=None
         self.solution=np.full((n,n),0)
         self.solutions=[]
@@ -17,6 +18,10 @@ class Csp():
         self.constraintRow=[]
         self.constraintCol=[]
         self.constraintGlobal=[]
+        self.constraintVariable=np.empty((n,n),dtype=list)
+        for i in range(0,n):
+            for j in range(0,n):
+                self.constraintVariable[i,j]=[]
 
 
     def setDomain(self,domain):
@@ -47,6 +52,15 @@ class Csp():
         start("chkCon")
         #self.prtMappedSolution()
         #print(f"{self.currX} {self.currY}")
+
+        start("chkConVar")
+        for conV in self.constraintVariable[self.currX,self.currY]:
+            if not conV(self.mappedSolution[self.currX,self.currY]):
+                stop("chkCon")
+                stop("chkConVar")
+                return False        
+        stop("chkConVar")
+
         start("chkConRow")
         for conR in self.constraintRow[self.currX]:
             if not conR(self.mappedSolution[self.currX],self.currY):
@@ -99,12 +113,14 @@ class Csp():
             self.currX+=1
         self.solution[self.currX,self.currY]=0
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
+        self.valueSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
         stop("nextV")
         return True        
 
     def backTrack(self)-> bool:
         start("backT")
         while(self.solution[self.currX][self.currY]+1>=len(self.domain[self.currX][self.currY])):
+            self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
             if(self.currY>0):
                 self.currY-=1
             elif(self.currX>0):
@@ -113,10 +129,18 @@ class Csp():
             else:                   #no more possible solutions - completed 
                 stop("backT")
                 return False        
+        self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
         self.solution[self.currX,self.currY]+=1
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][self.solution[self.currX,self.currY]]
+        self.valueSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
         stop("backT")
         return True
+
+    def valueSelected(self,x,y,value):
+        pass
+
+    def valueUnSelected(self,x,y,value):
+        pass
 
     def getFirst(self)->bool:
         start("all")

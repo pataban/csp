@@ -23,6 +23,9 @@ def prtTimes():
     print("times:")
     print("".join(times))
 
+def clrTimes():
+    global times
+    times={}
 
 def prt2D(data):
     print(DataFrame(data).to_string(header=False,index=False))

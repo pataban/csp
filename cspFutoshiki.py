@@ -3,8 +3,8 @@ from csp import Csp
 from support import *
 
 class CspFutoshiki(Csp):
-    def __init__(self, n,filename=None):
-        super().__init__(n)
+    def __init__(self, n,forwawrdChceck=True,filename=None):
+        super().__init__(n,forwawrdChceck)
         self.constraintRow=[]
         self.constraintCol=[]
         for _ in range(0,n):
@@ -35,6 +35,19 @@ class CspFutoshiki(Csp):
             return False
         return True
 
+    def valueSelected(self,x,y,value):
+        if(self.forwawrdChceck):
+            for i in range(x,self.n):
+                for j in range(y,self.currY):
+                    if(i!=x or j!=y):
+                        self.constraintVariable[i,j].append(lambda val:value!=val)
+
+    def valueUnSelected(self,x,y,value):
+        if(self.forwawrdChceck):
+            for i in range(x,self.n):
+                for j in range(y,self.currY):
+                    if(i!=x or j!=y):
+                        self.constraintVariable[i,j].pop()
 
     def loadDomainFutoshiki(self,filename):
         start("load")

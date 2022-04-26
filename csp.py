@@ -22,6 +22,11 @@ class Csp():
         for i in range(0,n):
             for j in range(0,n):
                 self.constraintVariable[i,j]=[]
+        self.variableQueue=np.empty(n*n,dtype=tuple)
+        for i in range(0,n):
+            for j in range(0,n):
+                self.variableQueue[i*self.n+j]=(i,j)
+        self.currV=-1
 
 
     def setDomain(self,domain):
@@ -44,9 +49,25 @@ class Csp():
             for j,(d,s) in enumerate(zip(dom,sol)):
                 self.mappedSolution[i,j]=d[s]
         stop("map")
+    
+    def nextVariableId(self):
+        if self.currV+1==self.n*self.n:
+            return False
+        self.currV+=1
+        self.currX=self.variableQueue[self.currV][0]
+        self.currY=self.variableQueue[self.currV][1]
+        return True
+
+    def prevVariableId(self):
+        if self.currV==0:
+            return False
+        self.currV-=1
+        self.currX=self.variableQueue[self.currV][0]
+        self.currY=self.variableQueue[self.currV][1]
+        return True
 
     def isFullSolution(self)->bool:
-        return ((self.currX+1==self.n) and (self.currY+1==self.n))
+        return (self.currV+1==self.n*self.n)
 
     def chkConstraints(self)->bool:
         start("chkCon")
@@ -107,10 +128,7 @@ class Csp():
             stop("nextV")
             return self.backTrack()
 
-        self.currY+=1
-        if(self.currY>=self.n):
-            self.currY=0
-            self.currX+=1
+        self.nextVariableId()
         self.solution[self.currX,self.currY]=0
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
         self.valueSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
@@ -121,12 +139,7 @@ class Csp():
         start("backT")
         while(self.solution[self.currX][self.currY]+1>=len(self.domain[self.currX][self.currY])):
             self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
-            if(self.currY>0):
-                self.currY-=1
-            elif(self.currX>0):
-                self.currY=self.n-1
-                self.currX-=1
-            else:                   #no more possible solutions - completed 
+            if not self.prevVariableId():     #no more possible solutions - completed 
                 stop("backT")
                 return False        
         self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])

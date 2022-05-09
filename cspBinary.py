@@ -3,8 +3,8 @@ from csp import Csp
 from support import *
 
 class CspBinary(Csp):
-    def __init__(self, n,forwawrdChceck=True,filename=None):
-        super().__init__(n,forwawrdChceck)
+    def __init__(self, n,filename=None,forwawrdChceck=True,heuristics=True):
+        super().__init__(n,forwawrdChceck,heuristics)
         self.constraintRow=[]
         self.constraintCol=[]
         for _ in range(0,n):
@@ -47,15 +47,17 @@ class CspBinary(Csp):
 
 
     def loadDomainBinary(self,filename):
-        defDom=[[0,1],[1,0]]
         defDomId=0
+        defDom=[[0,1]]
+        if self.heuristics:
+            defDom.append([1,0])
         self.domain=[]
         for i in range(0,self.n):
             self.domain.append([])
             for _ in range(0,self.n):
                 self.domain[i].append(defDom[defDomId])
-                defDomId=(defDomId+1)%2
-            defDomId=(defDomId+1)%2
+                defDomId=(defDomId+1)%len(defDom)
+            defDomId=(defDomId+1)%len(defDom)
 
         file=open(filename)
         for i in range(0,self.n):
@@ -73,12 +75,13 @@ class CspBinary(Csp):
         # mozna inaczej - 
         # mapa gestosci liczona na podstawie liczby wymuszonych sasiadow
         # wtedy queue w kolejnosci od najwiekszej gestosci 
-        for i in range(0,self.n):
-            for j in range(0,self.n):
-                if(len(self.domain[i,j])==1):
-                    self.currV+=1
-                    self.variableQueue[self.currV]=(i,j)
-                    
+        if self.heuristics:
+            for i in range(0,self.n):
+                for j in range(0,self.n):
+                    if(len(self.domain[i,j])==1):
+                        self.currV+=1
+                        self.variableQueue[self.currV]=(i,j)
+                        
         
         varQId=self.currV+1
         for i in range(0,self.n):

@@ -4,9 +4,10 @@ import numpy as np
 from support import *
 
 class Csp():
-    def __init__(self, n,forwawrdChceck=True):
+    def __init__(self, n,forwawrdChceck=True,heuristics=True):
         self.n=n
         self.forwawrdChceck=forwawrdChceck
+        self.heuristics=heuristics
         self.domain=None
         self.solution=np.full((n,n),0)
         self.solutions=[]

@@ -3,8 +3,8 @@ from csp import Csp
 from support import *
 
 class CspFutoshiki(Csp):
-    def __init__(self, n,forwawrdChceck=True,filename=None):
-        super().__init__(n,forwawrdChceck)
+    def __init__(self, n,filename=None,forwawrdChceck=True,heuristics=True):
+        super().__init__(n,forwawrdChceck,heuristics)
         self.constraintRow=[]
         self.constraintCol=[]
         for _ in range(0,n):
@@ -49,17 +49,18 @@ class CspFutoshiki(Csp):
                 self.constraintVariable[x,j].pop()
 
     def loadDomainFutoshiki(self,filename):
-        defDom=[]
-        for i in range(1,self.n+1):
-            defDom.append(list(range(i,self.n+1))+list(range(1,i)))
         defDomId=0
+        defDom=[list(range(1,self.n+1))]
+        if self.heuristics:
+            for i in range(2,self.n+1):
+                defDom.append(list(range(i,self.n+1))+list(range(1,i)))
         self.domain=[]
         for i in range(0,self.n):
             self.domain.append([])
             for _ in range(0,self.n):
                 self.domain[i].append(defDom[defDomId])
-                defDomId=(defDomId+1)%2
-            defDomId=(defDomId+1)%2
+                defDomId=(defDomId+1)%len(defDom)
+            defDomId=(defDomId+1)%len(defDom)
 
         file=open(filename)
         for i in range(0,self.n):
@@ -85,12 +86,13 @@ class CspFutoshiki(Csp):
         self.mapSolution()
 
     def setVariableQueue(self):
-        for i in range(0,self.n):
-            for j in range(0,self.n):
-                if(len(self.domain[i,j])==1):
-                    self.currV+=1
-                    self.variableQueue[self.currV]=(i,j)
-                    
+        if self.heuristics:
+            for i in range(0,self.n):
+                for j in range(0,self.n):
+                    if(len(self.domain[i,j])==1):
+                        self.currV+=1
+                        self.variableQueue[self.currV]=(i,j)
+                        
         
         varQId=self.currV+1
         for i in range(0,self.n):

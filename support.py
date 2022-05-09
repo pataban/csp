@@ -27,6 +27,22 @@ def clrTimes():
     global times
     times={}
 
+nodes=0
+def newNode():
+    global nodes
+    nodes+=1
+
+def falseNode():
+    global nodes
+    nodes-=1
+
+def prtNodes():
+    print(f"nodes = {nodes}")
+
+def clrNodes():
+    global nodes
+    nodes=0
+
 def prt2D(data):
     print(DataFrame(data).to_string(header=False,index=False))
 

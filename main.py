@@ -44,11 +44,14 @@ if __name__ == "__main__":
     print(f"result = {csp1.getFirst()}")
     csp1.prtMappedSolutions(1)
     prtTimes()
+    prtNodes()
 
     clrTimes()
+    clrNodes()
 
     print("forwardChecking:")
     print(f"result = {csp2.getFirst()}")
     csp2.prtMappedSolutions(1)
     prtTimes()
+    prtNodes()
     

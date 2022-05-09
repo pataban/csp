@@ -71,15 +71,21 @@ class Csp():
 
     def chkConstraints(self)->bool:
         start("chkCon")
-        #self.prtMappedSolution()
-        #print(f"{self.currX} {self.currY}")
+        """if self.forwawrdChceck:
+            input()
+            self.prtMappedSolution()
+            print(f"{self.currX} {self.currY}")"""
 
         start("chkConVar")
         for conV in self.constraintVariable[self.currX,self.currY]:
             if not conV(self.mappedSolution[self.currX,self.currY]):
                 stop("chkCon")
                 stop("chkConVar")
-                #print("row false")
+                falseNode()
+                """if self.forwawrdChceck:
+                    print("var false")
+                    print(f"var={self.mappedSolution[self.currX,self.currY]}")
+                    print(len(self.constraintVariable[self.currX,self.currY]))"""
                 return False        
         stop("chkConVar")
 
@@ -88,13 +94,15 @@ class Csp():
             if not conR(self.mappedSolution[self.currX],self.currY):
                 stop("chkConRow")
                 stop("chkCon")
-                #print("row false")
+                """if self.forwawrdChceck:
+                    print("row false")"""
                 return False
         for conC in self.constraintCol[self.currY]:
             if not conC(self.mappedSolution[:,self.currY],self.currX):
                 stop("chkConRow")
                 stop("chkCon")
-                #print("col false")
+                """if self.forwawrdChceck:
+                    print("col false")"""
                 return False
         stop("chkConRow")
 
@@ -103,12 +111,14 @@ class Csp():
             if(not conG(self.mappedSolution,self.currX,self.currY)):
                 stop("conG")
                 stop("chkCon")
-                #print("glo false")
+                """if self.forwawrdChceck:
+                    print("glo false")"""
                 return False
         stop("conG")
 
         stop("chkCon")
-        #print("true")
+        """if self.forwawrdChceck:
+            print("true")"""
         return True
 
     def chkSolution(self)->bool:
@@ -129,6 +139,7 @@ class Csp():
             stop("nextV")
             return self.backTrack()
 
+        newNode()
         self.nextVariableId()
         self.solution[self.currX,self.currY]=0
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][0]
@@ -142,7 +153,8 @@ class Csp():
             self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
             if not self.prevVariableId():     #no more possible solutions - completed 
                 stop("backT")
-                return False        
+                return False     
+        newNode()   
         self.valueUnSelected(self.currX,self.currY,self.mappedSolution[self.currX,self.currY])
         self.solution[self.currX,self.currY]+=1
         self.mappedSolution[self.currX,self.currY]=self.domain[self.currX,self.currY][self.solution[self.currX,self.currY]]
@@ -161,7 +173,6 @@ class Csp():
         while self.nextVariable():
             while not self.isFullSolution():
                 if self.chkConstraints():
-                    #input()
                     self.nextVariable()
                 else:
                     self.backTrack()
@@ -169,7 +180,6 @@ class Csp():
                 self.saveSolution()
                 stop("all")
                 return True
-            #input()
         stop("all")
         return False
 

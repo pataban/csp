@@ -39,17 +39,17 @@ class CspFutoshiki(Csp):
 
     def valueSelected(self,x,y,value):
         if(self.forwawrdChceck):
-            for i in range(x,self.n):
-                for j in range(y,self.currY):
-                    if(i!=x or j!=y):
-                        self.constraintVariable[i,j].append(lambda val:value!=val)
+            for i in range(x+1,self.n):
+                self.constraintVariable[i,y].append(lambda val,value=value:value!=val)
+            for j in range(y+1,self.n):
+                self.constraintVariable[x,j].append(lambda val,value=value:value!=val)
 
     def valueUnSelected(self,x,y,value):
         if(self.forwawrdChceck):
-            for i in range(x,self.n):
-                for j in range(y,self.currY):
-                    if(i!=x or j!=y):
-                        self.constraintVariable[i,j].pop()
+            for i in range(x+1,self.n):
+                self.constraintVariable[i,y].pop()
+            for j in range(y+1,self.n):
+                self.constraintVariable[x,j].pop()
 
     def loadDomainFutoshiki(self,filename):
         start("load")

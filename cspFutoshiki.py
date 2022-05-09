@@ -97,7 +97,7 @@ class CspFutoshiki(Csp):
         varQId=self.currV+1
         for i in range(0,self.n):
             for j in range(0,self.n):
-                if(len(self.domain[i,j])!=1):
+                if not self.heuristics or (len(self.domain[i,j])!=1):
                     self.variableQueue[varQId]=(i,j)
                     varQId+=1
 

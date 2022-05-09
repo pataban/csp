@@ -70,6 +70,10 @@ class Csp():
 
     def chkConstraints(self)->bool:
         start("chkCon")
+        """if self.currX==6 and self.currY==4:
+            self.prtMappedSolution()
+            input()
+            input()"""
 
         start("chkConVar")
         for conV in self.constraintVariable[self.currX,self.currY]:
@@ -85,11 +89,15 @@ class Csp():
             if not conR(self.mappedSolution[self.currX],self.currY):
                 stop("chkConRow")
                 stop("chkCon")
+                """if self.currX==6 and self.currY==4:
+                    print("row false")"""
                 return False
         for conC in self.constraintCol[self.currY]:
             if not conC(self.mappedSolution[:,self.currY],self.currX):
                 stop("chkConRow")
                 stop("chkCon")
+                """if self.currX==6 and self.currY==4:
+                    print("col false")"""
                 return False
         stop("chkConRow")
 
@@ -102,6 +110,8 @@ class Csp():
         stop("conG")
 
         stop("chkCon")
+        """if self.currX==6 and self.currY==4:
+            print("true")"""
         return True
 
     def chkSolution(self)->bool:

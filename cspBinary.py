@@ -23,7 +23,7 @@ class CspBinary(Csp):
     def constraintTrippleValueRepetition(data,currId)->bool:
         if(currId<2):
             return True
-        if data[currId]==data[currId-1] and data[currId-1]==data[currId-2]:
+        if data[currId] == data[currId-1] == data[currId-2]:
             return False
         return True
 
@@ -86,7 +86,7 @@ class CspBinary(Csp):
         varQId=self.currV+1
         for i in range(0,self.n):
             for j in range(0,self.n):
-                if(len(self.domain[i,j])!=1):
+                if not self.heuristics or (len(self.domain[i,j])!=1):
                     self.variableQueue[varQId]=(i,j)
                     varQId+=1
 

@@ -75,20 +75,22 @@ class CspBinary(Csp):
         # mozna inaczej - 
         # mapa gestosci liczona na podstawie liczby wymuszonych sasiadow
         # wtedy queue w kolejnosci od najwiekszej gestosci 
-        if self.heuristics:
+        
+        #powoduje brak sprawdzania constraints dla wartosci z load (tripple repetition)
+        """if self.heuristics:
             for i in range(0,self.n):
                 for j in range(0,self.n):
                     if(len(self.domain[i,j])==1):
                         self.currV+=1
-                        self.variableQueue[self.currV]=(i,j)
+                        self.variableQueue[self.currV]=(i,j)"""
                         
         
         varQId=self.currV+1
         for i in range(0,self.n):
             for j in range(0,self.n):
-                if not self.heuristics or (len(self.domain[i,j])!=1):
-                    self.variableQueue[varQId]=(i,j)
-                    varQId+=1
+                #if (len(self.domain[i,j])!=1):
+                self.variableQueue[varQId]=(i,j)
+                varQId+=1
 
         # wymaga aby solution posiadalo null tam gdzie jeszcze nie ma nic przypisane
         """domSum=np.sum(self.domain,axis=1)

@@ -21,43 +21,32 @@ class CspBinary(Csp):
 
 
     def constraintTrippleValueRepetition(data,currId)->bool:
-        start("conTripple")
         if(currId<2):
             return True
         if data[currId]==data[currId-1] and data[currId-1]==data[currId-2]:
-            stop("conTripple")
             return False
         return True
 
     def constraintEqualNumberSplit(data,currId)->bool:    
-        start("conEqSplit")
         if currId+1!=data.shape[0]:
-            stop("conEqSplit")
             return True
         if((np.sum(data)<<1)!=currId+1):   #bit shift
-            stop("conEqSplit")
             return False
-        stop("conEqSplit")
         return True
 
     def constraintUniqueRowCol(data,currX,currY)->bool:
-        start("conUnique")
         if(currX+1==data.shape[0]):
             for i in range(0,currY):
                 if(np.array_equal(data[:,currY],data[:,i])):
-                    stop("conUnique")
                     return False
         if(currY+1==data.shape[1]):
             for i in range(0,currX):
                 if(np.array_equal(data[currX,:],data[i,:])):
-                    stop("conUnique")
                     return False
-        stop("conUnique")
         return True
 
 
     def loadDomainBinary(self,filename):
-        start("load")
         defDom=[[0,1],[1,0]]
         defDomId=0
         self.domain=[]
@@ -79,10 +68,10 @@ class CspBinary(Csp):
         
         self.domain=np.array(self.domain,dtype=list)
         self.mapSolution()
-        stop("load")
 
     def setVariableQueue(self):
-        #mozliwa mapa gestosci liczona na podstawie liczby wymuszonych sasiadow
+        # mozna inaczej - 
+        # mapa gestosci liczona na podstawie liczby wymuszonych sasiadow
         # wtedy queue w kolejnosci od najwiekszej gestosci 
         for i in range(0,self.n):
             for j in range(0,self.n):

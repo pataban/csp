@@ -26,14 +26,11 @@ class CspFutoshiki(Csp):
             count[d-1]+=1
         for c in count:
             if c>1:
-                #print("unique")
                 return False
         return True
     
     def constraintLess(data,currId,id1,id2)->bool:
-        #print(f"{data} {currId} {id1} {id2}")
         if(id1<=currId and id2<=currId and not data[id1]<data[id2]):
-            #print(f"less {id1} {id2}")
             return False
         return True
 
@@ -52,7 +49,6 @@ class CspFutoshiki(Csp):
                 self.constraintVariable[x,j].pop()
 
     def loadDomainFutoshiki(self,filename):
-        start("load")
         defDom=[]
         for i in range(1,self.n+1):
             defDom.append(list(range(i,self.n+1))+list(range(1,i)))
@@ -72,10 +68,8 @@ class CspFutoshiki(Csp):
                 if(line[j]=='x') or (line[j]=='-')or (line[j]=='\n'):
                     pass
                 elif(line[j]=='<'):
-                    #print(f"{i} {j} {(j>>1)+1} {j>>1}")
                     self.constraintRow[i].append(lambda data,currId,j=j:CspFutoshiki.constraintLess(data,currId,j>>1,(j>>1)+1))
                 elif(line[j]=='>'):
-                    #print(f"{i} {j} {(j>>1)+1} {j>>1}")
                     self.constraintRow[i].append(lambda data,currId,j=j:CspFutoshiki.constraintLess(data,currId,(j>>1)+1,j>>1))
                 else:
                     self.domain[i][j>>1]=[int(line[j])]
@@ -89,7 +83,6 @@ class CspFutoshiki(Csp):
         
         self.domain=np.array(self.domain,dtype=list)
         self.mapSolution()
-        stop("load")
 
     def setVariableQueue(self):
         for i in range(0,self.n):

@@ -39,7 +39,6 @@ class Csp():
         self.mapSolution()
   
     def mapSolution(self,solution=None):
-        start("map")
         if (solution is None):
             solution=self.solution
         if(self.mappedSolution is None):
@@ -48,7 +47,6 @@ class Csp():
         for i,(dom, sol) in enumerate(zip(self.domain,solution)):
             for j,(d,s) in enumerate(zip(dom,sol)):
                 self.mappedSolution[i,j]=d[s]
-        stop("map")
     
     def nextVariableId(self):
         if self.currV+1==self.n*self.n:
@@ -71,10 +69,6 @@ class Csp():
 
     def chkConstraints(self)->bool:
         start("chkCon")
-        """if self.forwawrdChceck:
-            input()
-            self.prtMappedSolution()
-            print(f"{self.currX} {self.currY}")"""
 
         start("chkConVar")
         for conV in self.constraintVariable[self.currX,self.currY]:
@@ -82,10 +76,6 @@ class Csp():
                 stop("chkCon")
                 stop("chkConVar")
                 falseNode()
-                """if self.forwawrdChceck:
-                    print("var false")
-                    print(f"var={self.mappedSolution[self.currX,self.currY]}")
-                    print(len(self.constraintVariable[self.currX,self.currY]))"""
                 return False        
         stop("chkConVar")
 
@@ -94,15 +84,11 @@ class Csp():
             if not conR(self.mappedSolution[self.currX],self.currY):
                 stop("chkConRow")
                 stop("chkCon")
-                """if self.forwawrdChceck:
-                    print("row false")"""
                 return False
         for conC in self.constraintCol[self.currY]:
             if not conC(self.mappedSolution[:,self.currY],self.currX):
                 stop("chkConRow")
                 stop("chkCon")
-                """if self.forwawrdChceck:
-                    print("col false")"""
                 return False
         stop("chkConRow")
 
@@ -111,14 +97,10 @@ class Csp():
             if(not conG(self.mappedSolution,self.currX,self.currY)):
                 stop("conG")
                 stop("chkCon")
-                """if self.forwawrdChceck:
-                    print("glo false")"""
                 return False
         stop("conG")
 
         stop("chkCon")
-        """if self.forwawrdChceck:
-            print("true")"""
         return True
 
     def chkSolution(self)->bool:
@@ -127,11 +109,9 @@ class Csp():
         return False
 
     def saveSolution(self):
-        start("save")
         self.solutionCount+=1
         self.solutions.append(copy.deepcopy(self.solution))
         self.mappedSolutions.append(copy.deepcopy(self.mappedSolution))
-        stop("save")
   
     def nextVariable(self)->bool:
         start("nextV")

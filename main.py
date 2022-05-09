@@ -2,67 +2,45 @@ from support import *
 from cspBinary import CspBinary
 from cspFutoshiki import CspFutoshiki
 
+
+dataBinary=[  
+    (4,None),
+    (6,r"dane\binaryDemo"),
+    (6,r"dane\binary_6x6"),
+    (8,r"dane\binary_8x8"),
+    (10,r"dane\binary_10x10")
+]
+
+dataFutoshiki=[  
+    (4,r"dane\futoshikiDemo"),
+    (4,r"dane\futoshiki_4x4"),
+    (5,r"dane\futoshiki_5x5"),
+    (6,r"dane\futoshiki_6x6"),    
+    (7,r"dane\futoshiki_7x7"),
+    (7,r"dane\futoshiki_7x7_hard")
+]
+
 if __name__ == "__main__":
+    #0 - binary or 1 - futoshiki
+    cspType=1
+    dataId=2
+    
     csp1=None
     csp2=None
     csp3=None
     csp4=None
-    data=9
-    if data ==1:
-        csp1=CspBinary(4,forwawrdChceck=False)
-        csp2=CspBinary(4,forwawrdChceck=True)
-        csp3=CspBinary(4,heuristics=False)
-        csp4=CspBinary(4,heuristics=True)
-    elif data==2:
-        csp1=CspBinary(6,r"dane\binaryDemo",forwawrdChceck=False)
-        csp2=CspBinary(6,r"dane\binaryDemo",forwawrdChceck=True)
-        csp3=CspBinary(6,r"dane\binaryDemo",heuristics=False)
-        csp4=CspBinary(6,r"dane\binaryDemo",heuristics=True)
-    elif data==3:
-        csp1=CspBinary(6,r"dane\binary_6x6",forwawrdChceck=False)
-        csp2=CspBinary(6,r"dane\binary_6x6",forwawrdChceck=True)
-        csp3=CspBinary(6,r"dane\binary_6x6",heuristics=False)
-        csp4=CspBinary(6,r"dane\binary_6x6",heuristics=True)
-    elif data==4:
-        csp1=CspBinary(8,r"dane\binary_8x8",forwawrdChceck=False)
-        csp2=CspBinary(8,r"dane\binary_8x8",forwawrdChceck=True)
-        csp3=CspBinary(8,r"dane\binary_8x8",heuristics=False)
-        csp4=CspBinary(8,r"dane\binary_8x8",heuristics=True)
-    elif data==5:
-        csp1=CspBinary(10,r"dane\binary_10x10",forwawrdChceck=False)
-        csp2=CspBinary(10,r"dane\binary_10x10",forwawrdChceck=True)
-        csp3=CspBinary(10,r"dane\binary_10x10",heuristics=False)
-        csp4=CspBinary(10,r"dane\binary_10x10",heuristics=True)
-    elif data==6:
-        csp1=CspFutoshiki(4,r"dane\futoshikiDemo",forwawrdChceck=False)
-        csp2=CspFutoshiki(4,r"dane\futoshikiDemo",forwawrdChceck=True)
-        csp3=CspFutoshiki(4,r"dane\futoshikiDemo",heuristics=False)
-        csp4=CspFutoshiki(4,r"dane\futoshikiDemo",heuristics=True)
-    elif data==7:
-        csp1=CspFutoshiki(4,r"dane\futoshiki_4x4",forwawrdChceck=False)
-        csp2=CspFutoshiki(4,r"dane\futoshiki_4x4",forwawrdChceck=True)
-        csp3=CspFutoshiki(4,r"dane\futoshiki_4x4",heuristics=False)
-        csp4=CspFutoshiki(4,r"dane\futoshiki_4x4",heuristics=True)
-    elif data==8:
-        csp1=CspFutoshiki(5,r"dane\futoshiki_5x5",forwawrdChceck=False)
-        csp2=CspFutoshiki(5,r"dane\futoshiki_5x5",forwawrdChceck=True)
-        csp3=CspFutoshiki(5,r"dane\futoshiki_5x5",heuristics=False)
-        csp4=CspFutoshiki(5,r"dane\futoshiki_5x5",heuristics=True)
-    elif data==9:
-        csp1=CspFutoshiki(6,r"dane\futoshiki_6x6",forwawrdChceck=False)
-        csp2=CspFutoshiki(6,r"dane\futoshiki_6x6",forwawrdChceck=True)
-        csp3=CspFutoshiki(6,r"dane\futoshiki_6x6",heuristics=False)
-        csp4=CspFutoshiki(6,r"dane\futoshiki_6x6",heuristics=True)
-    elif data==10:
-        csp1=CspFutoshiki(7,r"dane\futoshiki_7x7",forwawrdChceck=False)
-        csp2=CspFutoshiki(7,r"dane\futoshiki_7x7",forwawrdChceck=True)
-        csp3=CspFutoshiki(7,r"dane\futoshiki_7x7",heuristics=False)
-        csp4=CspFutoshiki(7,r"dane\futoshiki_7x7",heuristics=True)
-    elif data==11:
-        csp1=CspFutoshiki(7,r"dane\futoshiki_7x7_hard",forwawrdChceck=False)
-        csp2=CspFutoshiki(7,r"dane\futoshiki_7x7_hard",forwawrdChceck=True)
-        csp3=CspFutoshiki(7,r"dane\futoshiki_7x7_hard",heuristics=False)
-        csp4=CspFutoshiki(7,r"dane\futoshiki_7x7_hard",heuristics=True)
+    
+    if cspType==0:
+        csp1=CspBinary(dataBinary[dataId][0],dataBinary[dataId][1],forwawrdChceck=False)
+        csp2=CspBinary(dataBinary[dataId][0],dataBinary[dataId][1],forwawrdChceck=True)
+        csp3=CspBinary(dataBinary[dataId][0],dataBinary[dataId][1],heuristics=False)
+        csp4=CspBinary(dataBinary[dataId][0],dataBinary[dataId][1],heuristics=True)
+    elif cspType==1:
+        csp1=CspFutoshiki(dataFutoshiki[dataId][0],dataFutoshiki[dataId][1],forwawrdChceck=False)
+        csp2=CspFutoshiki(dataFutoshiki[dataId][0],dataFutoshiki[dataId][1],forwawrdChceck=True)
+        csp3=CspFutoshiki(dataFutoshiki[dataId][0],dataFutoshiki[dataId][1],heuristics=False)
+        csp4=CspFutoshiki(dataFutoshiki[dataId][0],dataFutoshiki[dataId][1],heuristics=True)
+        
 
     print("backTracking:")
     csp1.getFirst()

@@ -8,7 +8,8 @@ dataBinary=[
     (6,r"dane\binaryDemo"),     #1
     (6,r"dane\binary_6x6"),     #2
     (8,r"dane\binary_8x8"),     #3
-    (10,r"dane\binary_10x10")   #4
+    (10,r"dane\binary_10x10"),  #4
+    (12,r"dane\binary_12x12")   #5
 ]
 
 dataFutoshiki=[  
@@ -22,8 +23,8 @@ dataFutoshiki=[
 
 if __name__ == "__main__":
     #0 - binary or 1 - futoshiki
-    cspType=0
-    dataId=4
+    cspType=1
+    dataId=3
     
     csp1=None
     csp2=None
